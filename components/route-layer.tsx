@@ -1,6 +1,6 @@
 'use client'
 
-import { CircleMarker, Polyline, Tooltip } from 'react-leaflet'
+import { CircleMarker, Polyline, Popup, Tooltip } from 'react-leaflet'
 import type { LatLngTuple } from 'leaflet'
 import { getRouteTier, type GhostRoute } from '@/lib/routes'
 
@@ -38,12 +38,12 @@ export function RouteLayer({ routes }: { routes: GhostRoute[] }) {
             radius={4}
             pathOptions={{ className: `route-stop route-stop-${tier}` }}
           >
-            <Tooltip direction="top" offset={[0, -4]} className="route-tooltip">
+            <Popup className="stop-popup" offset={[0, -2]}>
               <span className="block font-sans text-xs font-medium">{stop.name}</span>
               <span className="block font-mono text-[10px] text-muted-text">
-                {`${stop.sightings} sightings`}
+                {`${route.name} · ${stop.sightings} sightings`}
               </span>
-            </Tooltip>
+            </Popup>
           </CircleMarker>
         ))
       })}
