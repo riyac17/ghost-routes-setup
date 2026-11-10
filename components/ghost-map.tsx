@@ -24,6 +24,7 @@ export default function GhostMap() {
     <MapContainer
       center={BENGALURU_CENTER}
       zoom={12}
+      minZoom={5}
       zoomControl={false}
       className="ghost-map size-full bg-bg"
     >
