@@ -119,6 +119,105 @@
   text-shadow: none !important;
 }
 
+/* Leaflet: match theme tokens and flat style */
+.ghost-map.leaflet-container {
+  background: var(--bg);
+  font-family: var(--font-sans);
+}
+
+.ghost-map .leaflet-control-attribution {
+  background: var(--surface);
+  color: var(--text-muted);
+  border-top: var(--hairline) solid var(--line);
+  border-left: var(--hairline) solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.ghost-map .leaflet-control-attribution a {
+  color: var(--text);
+}
+
+/* Route lines: colors come from theme tokens via CSS (overrides SVG attributes) */
+.ghost-map .route-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ghost-map .route-solid {
+  stroke: var(--route-solid);
+  stroke-width: 5px;
+  stroke-opacity: 1;
+  stroke-dasharray: none;
+}
+
+.ghost-map .route-flicker {
+  stroke: var(--route-flicker);
+  stroke-width: 3px;
+  stroke-opacity: 1;
+  stroke-dasharray: 9 6;
+  stroke-linecap: butt;
+}
+
+.ghost-map .route-whisper {
+  stroke: var(--route-whisper);
+  stroke-width: 3px;
+  stroke-opacity: 1;
+  stroke-dasharray: 1 7;
+  stroke-linecap: round;
+}
+
+.ghost-map .route-stop {
+  fill: var(--bg);
+  fill-opacity: 1;
+  stroke-width: 2px;
+}
+
+.ghost-map .route-stop-solid { stroke: var(--route-solid); }
+.ghost-map .route-stop-flicker { stroke: var(--route-flicker); }
+.ghost-map .route-stop-whisper { stroke: var(--route-whisper); }
+
+.ghost-map .route-tooltip {
+  background: var(--surface);
+  color: var(--text);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+
+.ghost-map .route-tooltip::before {
+  display: none;
+}
+
+.ghost-map .route-stop { cursor: pointer; }
+
+.ghost-map .stop-popup .leaflet-popup-content-wrapper {
+  background: var(--surface);
+  color: var(--text);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+
+.ghost-map .stop-popup .leaflet-popup-content {
+  margin: 8px 28px 8px 10px;
+  line-height: 1.35;
+}
+
+.ghost-map .stop-popup .leaflet-popup-tip-container {
+  display: none;
+}
+
+.ghost-map .stop-popup .leaflet-popup-close-button {
+  color: var(--text-muted);
+}
+
+.ghost-map .stop-popup .leaflet-popup-close-button:hover {
+  color: var(--text);
+}
+
 .border { border-width: var(--hairline); }
 .border-t { border-top-width: var(--hairline); }
 .border-r { border-right-width: var(--hairline); }
