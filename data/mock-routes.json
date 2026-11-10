@@ -1,166 +1,360 @@
 [
   {
-    "id": "rt-kor-slk",
-    "name": "Koramangala to Silk Board",
+    "id": "route-majestic-indiranagar",
+    "name": "Majestic – Indiranagar 100 ft Road",
     "geometry": {
       "type": "LineString",
       "coordinates": [
-        [77.6113, 12.9346],
-        [77.6135, 12.932],
-        [77.615, 12.929],
-        [77.616, 12.926],
-        [77.6174, 12.9226],
-        [77.6195, 12.9205],
-        [77.6215, 12.919],
-        [77.6238, 12.9177]
+        [77.5716, 12.9776],
+        [77.5775, 12.9769],
+        [77.5835, 12.9764],
+        [77.5895, 12.9758],
+        [77.5959, 12.9753],
+        [77.602, 12.9748],
+        [77.6082, 12.9742],
+        [77.6145, 12.9736],
+        [77.6203, 12.9729],
+        [77.6255, 12.9733],
+        [77.6305, 12.9742],
+        [77.6355, 12.9732],
+        [77.6412, 12.9719]
       ]
     },
     "stops": [
-      { "id": "st-forum", "name": "Forum Mall, Hosur Road", "lat": 12.9346, "lon": 77.6113, "sightings": 41 },
-      { "id": "st-st-johns", "name": "St. John's Hospital", "lat": 12.929, "lon": 77.615, "sightings": 33 },
-      { "id": "st-madiwala", "name": "Madiwala Checkpost", "lat": 12.9226, "lon": 77.6174, "sightings": 38 },
-      { "id": "st-silkboard", "name": "Silk Board Junction", "lat": 12.9177, "lon": 77.6238, "sightings": 52 }
+      {
+        "id": "stop-kbs",
+        "name": "Kempegowda Bus Station",
+        "lat": 12.9776,
+        "lon": 77.5716,
+        "sightings": 412
+      },
+      {
+        "id": "stop-anil-kumble-circle",
+        "name": "Anil Kumble Circle",
+        "lat": 12.9753,
+        "lon": 77.5959,
+        "sightings": 388
+      },
+      {
+        "id": "stop-mg-road-metro",
+        "name": "MG Road Metro",
+        "lat": 12.9756,
+        "lon": 77.6068,
+        "sightings": 356
+      },
+      {
+        "id": "stop-trinity-circle",
+        "name": "Trinity Circle",
+        "lat": 12.9729,
+        "lon": 77.6203,
+        "sightings": 301
+      },
+      {
+        "id": "stop-indiranagar-100ft",
+        "name": "Indiranagar 100 ft Road",
+        "lat": 12.9719,
+        "lon": 77.6412,
+        "sightings": 264
+      }
     ],
     "frequency": [
-      { "hour": 7, "headway_min": 6 },
-      { "hour": 9, "headway_min": 4 },
-      { "hour": 12, "headway_min": 9 },
-      { "hour": 15, "headway_min": 8 },
-      { "hour": 18, "headway_min": 4 },
-      { "hour": 21, "headway_min": 12 }
+      { "hour": 6, "headway_min": 14 },
+      { "hour": 7, "headway_min": 10 },
+      { "hour": 8, "headway_min": 7 },
+      { "hour": 9, "headway_min": 6 },
+      { "hour": 10, "headway_min": 8 },
+      { "hour": 11, "headway_min": 10 },
+      { "hour": 12, "headway_min": 11 },
+      { "hour": 13, "headway_min": 12 },
+      { "hour": 14, "headway_min": 12 },
+      { "hour": 15, "headway_min": 11 },
+      { "hour": 16, "headway_min": 9 },
+      { "hour": 17, "headway_min": 7 },
+      { "hour": 18, "headway_min": 6 },
+      { "hour": 19, "headway_min": 7 },
+      { "hour": 20, "headway_min": 9 },
+      { "hour": 21, "headway_min": 11 },
+      { "hour": 22, "headway_min": 14 }
     ],
-    "confidence": 0.86,
-    "sightingsThisWeek": 164
+    "confidence": 0.91,
+    "sightingsThisWeek": 87
   },
   {
-    "id": "rt-maj-ypr",
-    "name": "Majestic to Yeshwanthpur",
+    "id": "route-marathahalli-whitefield",
+    "name": "Marathahalli – Whitefield",
     "geometry": {
       "type": "LineString",
       "coordinates": [
-        [77.5713, 12.9767],
-        [77.5725, 12.983],
-        [77.572, 12.9905],
-        [77.5705, 12.9965],
-        [77.568, 13.0005],
-        [77.562, 13.008],
-        [77.556, 13.015],
-        [77.548, 13.022],
-        [77.54, 13.028]
+        [77.701, 12.956],
+        [77.706, 12.9585],
+        [77.711, 12.9615],
+        [77.716, 12.9645],
+        [77.721, 12.967],
+        [77.726, 12.969],
+        [77.731, 12.9705],
+        [77.736, 12.9715],
+        [77.742, 12.971],
+        [77.75, 12.9698]
       ]
     },
     "stops": [
-      { "id": "st-majestic", "name": "Kempegowda Bus Station", "lat": 12.9767, "lon": 77.5713, "sightings": 47 },
-      { "id": "st-seshadripuram", "name": "Seshadripuram", "lat": 12.983, "lon": 77.5725, "sightings": 22 },
-      { "id": "st-malleswaram", "name": "Malleswaram 8th Cross", "lat": 12.9965, "lon": 77.5705, "sightings": 29 },
-      { "id": "st-mathikere", "name": "Mathikere Cross", "lat": 13.015, "lon": 77.556, "sightings": 18 },
-      { "id": "st-yeshwanthpur", "name": "Yeshwanthpur Circle", "lat": 13.028, "lon": 77.54, "sightings": 35 }
+      {
+        "id": "stop-marathahalli-bridge",
+        "name": "Marathahalli Bridge",
+        "lat": 12.956,
+        "lon": 77.701,
+        "sightings": 328
+      },
+      {
+        "id": "stop-kundalahalli-gate",
+        "name": "Kundalahalli Gate",
+        "lat": 12.9615,
+        "lon": 77.711,
+        "sightings": 276
+      },
+      {
+        "id": "stop-brookefield",
+        "name": "Brookefield",
+        "lat": 12.967,
+        "lon": 77.721,
+        "sightings": 198
+      },
+      {
+        "id": "stop-whitefield",
+        "name": "Whitefield",
+        "lat": 12.9698,
+        "lon": 77.75,
+        "sightings": 241
+      }
     ],
     "frequency": [
-      { "hour": 6, "headway_min": 10 },
-      { "hour": 8, "headway_min": 5 },
-      { "hour": 11, "headway_min": 8 },
-      { "hour": 14, "headway_min": 10 },
-      { "hour": 17, "headway_min": 5 },
-      { "hour": 20, "headway_min": 9 }
+      { "hour": 6, "headway_min": 16 },
+      { "hour": 7, "headway_min": 12 },
+      { "hour": 8, "headway_min": 8 },
+      { "hour": 9, "headway_min": 7 },
+      { "hour": 10, "headway_min": 9 },
+      { "hour": 11, "headway_min": 11 },
+      { "hour": 12, "headway_min": 12 },
+      { "hour": 13, "headway_min": 12 },
+      { "hour": 14, "headway_min": 11 },
+      { "hour": 15, "headway_min": 10 },
+      { "hour": 16, "headway_min": 9 },
+      { "hour": 17, "headway_min": 7 },
+      { "hour": 18, "headway_min": 6 },
+      { "hour": 19, "headway_min": 8 },
+      { "hour": 20, "headway_min": 10 },
+      { "hour": 21, "headway_min": 12 },
+      { "hour": 22, "headway_min": 15 },
+      { "hour": 23, "headway_min": 18 }
     ],
-    "confidence": 0.74,
-    "sightingsThisWeek": 121
+    "confidence": 0.78,
+    "sightingsThisWeek": 64
   },
   {
-    "id": "rt-ind-mth",
-    "name": "Indiranagar to Marathahalli",
+    "id": "route-jayanagar-btm",
+    "name": "Jayanagar 4th Block – BTM Layout",
     "geometry": {
       "type": "LineString",
       "coordinates": [
-        [77.6408, 12.9784],
-        [77.6405, 12.972],
-        [77.6398, 12.966],
-        [77.6387, 12.961],
-        [77.648, 12.96],
-        [77.658, 12.959],
-        [77.67, 12.9585],
-        [77.682, 12.957],
-        [77.692, 12.9565],
-        [77.7011, 12.9569]
+        [77.5834, 12.9299],
+        [77.585, 12.9265],
+        [77.5875, 12.9235],
+        [77.59, 12.921],
+        [77.5925, 12.9195],
+        [77.597, 12.918],
+        [77.601, 12.9165],
+        [77.6055, 12.9155],
+        [77.61, 12.915]
       ]
     },
     "stops": [
-      { "id": "st-100ft", "name": "Indiranagar 100 Ft Road", "lat": 12.9784, "lon": 77.6408, "sightings": 19 },
-      { "id": "st-domlur", "name": "Domlur Flyover", "lat": 12.961, "lon": 77.6387, "sightings": 14 },
-      { "id": "st-hal", "name": "HAL Main Gate", "lat": 12.9585, "lon": 77.67, "sightings": 11 },
-      { "id": "st-marathahalli", "name": "Marathahalli Bridge", "lat": 12.9569, "lon": 77.7011, "sightings": 21 }
+      {
+        "id": "stop-jayanagar-4th-block",
+        "name": "Jayanagar 4th Block",
+        "lat": 12.9299,
+        "lon": 77.5834,
+        "sightings": 214
+      },
+      {
+        "id": "stop-jayanagar-9th-block",
+        "name": "Jayanagar 9th Block",
+        "lat": 12.9235,
+        "lon": 77.5875,
+        "sightings": 132
+      },
+      {
+        "id": "stop-jayadeva-hospital",
+        "name": "Jayadeva Hospital",
+        "lat": 12.918,
+        "lon": 77.597,
+        "sightings": 187
+      },
+      {
+        "id": "stop-btm-16th-main",
+        "name": "BTM Layout 16th Main",
+        "lat": 12.915,
+        "lon": 77.61,
+        "sightings": 243
+      }
     ],
     "frequency": [
-      { "hour": 8, "headway_min": 12 },
-      { "hour": 10, "headway_min": 15 },
+      { "hour": 6, "headway_min": 18 },
+      { "hour": 7, "headway_min": 14 },
+      { "hour": 8, "headway_min": 10 },
+      { "hour": 9, "headway_min": 9 },
+      { "hour": 10, "headway_min": 11 },
+      { "hour": 11, "headway_min": 12 },
+      { "hour": 12, "headway_min": 13 },
+      { "hour": 13, "headway_min": 13 },
+      { "hour": 14, "headway_min": 12 },
+      { "hour": 15, "headway_min": 11 },
+      { "hour": 16, "headway_min": 10 },
+      { "hour": 17, "headway_min": 9 },
+      { "hour": 18, "headway_min": 8 },
+      { "hour": 19, "headway_min": 10 },
+      { "hour": 20, "headway_min": 12 },
+      { "hour": 21, "headway_min": 14 },
+      { "hour": 22, "headway_min": 17 }
+    ],
+    "confidence": 0.57,
+    "sightingsThisWeek": 23
+  },
+  {
+    "id": "route-hebbal-shivajinagar",
+    "name": "Hebbal – Shivajinagar",
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [
+        [77.5975, 13.0358],
+        [77.596, 13.028],
+        [77.5948, 13.02],
+        [77.5935, 13.012],
+        [77.5932, 13.002],
+        [77.5955, 12.994],
+        [77.598, 12.99],
+        [77.5995, 12.986],
+        [77.6, 12.983]
+      ]
+    },
+    "stops": [
+      {
+        "id": "stop-hebbal-flyover",
+        "name": "Hebbal Flyover",
+        "lat": 13.0358,
+        "lon": 77.5975,
+        "sightings": 96
+      },
+      {
+        "id": "stop-jayamahal",
+        "name": "Jayamahal",
+        "lat": 13.002,
+        "lon": 77.5932,
+        "sightings": 74
+      },
+      {
+        "id": "stop-cantonment-station",
+        "name": "Cantonment Railway Station",
+        "lat": 12.992,
+        "lon": 77.598,
+        "sightings": 61
+      },
+      {
+        "id": "stop-shivajinagar",
+        "name": "Shivajinagar Bus Stand",
+        "lat": 12.983,
+        "lon": 77.6,
+        "sightings": 88
+      }
+    ],
+    "frequency": [
+      { "hour": 7, "headway_min": 22 },
+      { "hour": 8, "headway_min": 18 },
+      { "hour": 9, "headway_min": 15 },
+      { "hour": 10, "headway_min": 17 },
+      { "hour": 11, "headway_min": 19 },
+      { "hour": 12, "headway_min": 20 },
       { "hour": 13, "headway_min": 20 },
-      { "hour": 17, "headway_min": 12 },
-      { "hour": 19, "headway_min": 14 }
+      { "hour": 14, "headway_min": 19 },
+      { "hour": 15, "headway_min": 18 },
+      { "hour": 16, "headway_min": 16 },
+      { "hour": 17, "headway_min": 14 },
+      { "hour": 18, "headway_min": 13 },
+      { "hour": 19, "headway_min": 15 },
+      { "hour": 20, "headway_min": 18 },
+      { "hour": 21, "headway_min": 22 }
     ],
-    "confidence": 0.55,
-    "sightingsThisWeek": 65
+    "confidence": 0.36,
+    "sightingsThisWeek": 9
   },
   {
-    "id": "rt-heb-myt",
-    "name": "Hebbal to Manyata Tech Park",
+    "id": "route-banashankari-majestic",
+    "name": "Banashankari – Majestic",
     "geometry": {
       "type": "LineString",
       "coordinates": [
-        [77.597, 13.0358],
-        [77.601, 13.0375],
-        [77.6055, 13.039],
-        [77.61, 13.0405],
-        [77.6145, 13.042],
-        [77.6185, 13.0432],
-        [77.6215, 13.0445],
-        [77.6225, 13.0465]
+        [77.546, 12.9255],
+        [77.55, 12.929],
+        [77.5535, 12.933],
+        [77.557, 12.937],
+        [77.562, 12.941],
+        [77.565, 12.945],
+        [77.568, 12.949],
+        [77.571, 12.953],
+        [77.574, 12.96],
+        [77.5735, 12.965],
+        [77.5725, 12.97],
+        [77.5716, 12.9776]
       ]
     },
     "stops": [
-      { "id": "st-hebbal", "name": "Hebbal Flyover", "lat": 13.0358, "lon": 77.597, "sightings": 9 },
-      { "id": "st-kempapura", "name": "Kempapura", "lat": 13.0405, "lon": 77.61, "sightings": 4 },
-      { "id": "st-nagawara", "name": "Nagawara Junction", "lat": 13.0432, "lon": 77.6185, "sightings": 6 },
-      { "id": "st-manyata", "name": "Manyata Tech Park Gate", "lat": 13.0465, "lon": 77.6225, "sightings": 8 }
+      {
+        "id": "stop-banashankari-ttmc",
+        "name": "Banashankari TTMC",
+        "lat": 12.9255,
+        "lon": 77.546,
+        "sightings": 118
+      },
+      {
+        "id": "stop-basavanagudi",
+        "name": "Basavanagudi",
+        "lat": 12.941,
+        "lon": 77.562,
+        "sightings": 92
+      },
+      {
+        "id": "stop-kr-market",
+        "name": "KR Market",
+        "lat": 12.96,
+        "lon": 77.574,
+        "sightings": 141
+      },
+      {
+        "id": "stop-majestic",
+        "name": "Majestic",
+        "lat": 12.9776,
+        "lon": 77.5716,
+        "sightings": 372
+      }
     ],
     "frequency": [
-      { "hour": 8, "headway_min": 20 },
-      { "hour": 9, "headway_min": 18 },
-      { "hour": 18, "headway_min": 22 },
-      { "hour": 19, "headway_min": 25 }
+      { "hour": 6, "headway_min": 25 },
+      { "hour": 7, "headway_min": 20 },
+      { "hour": 8, "headway_min": 17 },
+      { "hour": 9, "headway_min": 16 },
+      { "hour": 10, "headway_min": 18 },
+      { "hour": 11, "headway_min": 20 },
+      { "hour": 12, "headway_min": 21 },
+      { "hour": 13, "headway_min": 21 },
+      { "hour": 14, "headway_min": 20 },
+      { "hour": 15, "headway_min": 19 },
+      { "hour": 16, "headway_min": 18 },
+      { "hour": 17, "headway_min": 16 },
+      { "hour": 18, "headway_min": 15 },
+      { "hour": 19, "headway_min": 17 },
+      { "hour": 20, "headway_min": 20 },
+      { "hour": 21, "headway_min": 24 }
     ],
-    "confidence": 0.34,
-    "sightingsThisWeek": 27
-  },
-  {
-    "id": "rt-ecy-slk",
-    "name": "Electronic City to Silk Board",
-    "geometry": {
-      "type": "LineString",
-      "coordinates": [
-        [77.6602, 12.8452],
-        [77.655, 12.856],
-        [77.649, 12.866],
-        [77.643, 12.876],
-        [77.639, 12.889],
-        [77.634, 12.899],
-        [77.629, 12.908],
-        [77.6238, 12.9177]
-      ]
-    },
-    "stops": [
-      { "id": "st-ecity", "name": "Electronic City Phase 1", "lat": 12.8452, "lon": 77.6602, "sightings": 5 },
-      { "id": "st-hosa-road", "name": "Hosa Road Junction", "lat": 12.876, "lon": 77.643, "sightings": 3 },
-      { "id": "st-kudlu", "name": "Kudlu Gate", "lat": 12.889, "lon": 77.639, "sightings": 4 },
-      { "id": "st-bommanahalli", "name": "Bommanahalli", "lat": 12.908, "lon": 77.629, "sightings": 2 },
-      { "id": "st-silkboard-s", "name": "Silk Board Junction", "lat": 12.9177, "lon": 77.6238, "sightings": 5 }
-    ],
-    "frequency": [
-      { "hour": 7, "headway_min": 25 },
-      { "hour": 9, "headway_min": 30 },
-      { "hour": 18, "headway_min": 30 }
-    ],
-    "confidence": 0.21,
-    "sightingsThisWeek": 19
+    "confidence": 0.28,
+    "sightingsThisWeek": 5
   }
 ]

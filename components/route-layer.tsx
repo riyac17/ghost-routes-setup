@@ -4,20 +4,35 @@ import { CircleMarker, Polyline, Popup, Tooltip } from 'react-leaflet'
 import type { LatLngTuple } from 'leaflet'
 import { getRouteTier, type GhostRoute } from '@/lib/routes'
 
-export function RouteLayer({ routes }: { routes: GhostRoute[] }) {
+export function RouteLayer({
+  routes,
+  selectedRouteId,
+  onSelectRoute,
+}: {
+  routes: GhostRoute[]
+  selectedRouteId: string | null
+  onSelectRoute: (id: string) => void
+}) {
   return (
     <>
       {routes.map((route) => {
         const tier = getRouteTier(route.confidence)
+        const isSelected = selectedRouteId === route.id
         const positions = route.geometry.coordinates.map(
           ([lon, lat]) => [lat, lon] as LatLngTuple,
         )
 
         return (
           <Polyline
-            key={route.id}
+            // Leaflet only reads `className` when the SVG path is created, so
+            // remounting on selection is what applies the thicker highlight.
+            key={`${route.id}-${isSelected ? 'selected' : 'idle'}`}
             positions={positions}
-            pathOptions={{ className: `route-line route-${tier}` }}
+            pathOptions={{
+              className: `route-line route-${tier}${isSelected ? ' route-selected' : ''}`,
+              bubblingMouseEvents: false,
+            }}
+            eventHandlers={{ click: () => onSelectRoute(route.id) }}
           >
             <Tooltip sticky className="route-tooltip">
               <span className="block font-sans text-xs font-medium">{route.name}</span>

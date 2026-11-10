@@ -144,6 +144,7 @@
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
+  cursor: pointer;
 }
 
 .ghost-map .route-solid {
@@ -167,6 +168,16 @@
   stroke-opacity: 1;
   stroke-dasharray: 1 7;
   stroke-linecap: round;
+}
+
+/* Clicked route: same theme color, slightly thicker */
+.ghost-map .route-solid.route-selected {
+  stroke-width: 7px;
+}
+
+.ghost-map .route-flicker.route-selected,
+.ghost-map .route-whisper.route-selected {
+  stroke-width: 5px;
 }
 
 .ghost-map .route-stop {
