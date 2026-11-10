@@ -119,6 +119,26 @@
   text-shadow: none !important;
 }
 
+/* Leaflet: match theme tokens and flat style */
+.ghost-map.leaflet-container {
+  background: var(--bg);
+  font-family: var(--font-sans);
+}
+
+.ghost-map .leaflet-control-attribution {
+  background: var(--surface);
+  color: var(--text-muted);
+  border-top: var(--hairline) solid var(--line);
+  border-left: var(--hairline) solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.ghost-map .leaflet-control-attribution a {
+  color: var(--text);
+}
+
 .border { border-width: var(--hairline); }
 .border-t { border-top-width: var(--hairline); }
 .border-r { border-right-width: var(--hairline); }
