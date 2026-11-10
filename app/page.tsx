@@ -1,11 +1,14 @@
 import { MapLoader } from '@/components/map-loader'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { getRoutes } from '@/lib/routes'
 
 export default function Page() {
+  const routes = getRoutes()
+
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-bg text-text">
       <div className="fixed inset-0 z-0">
-        <MapLoader />
+        <MapLoader routes={routes} />
       </div>
 
       <header className="pointer-events-none absolute inset-x-0 top-4 z-[1000] flex justify-center md:top-6">

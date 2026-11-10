@@ -139,6 +139,55 @@
   color: var(--text);
 }
 
+/* Route lines: colors come from theme tokens via CSS (overrides SVG attributes) */
+.ghost-map .route-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ghost-map .route-solid {
+  stroke: var(--route-solid);
+  stroke-width: 4px;
+  stroke-opacity: 1;
+}
+
+.ghost-map .route-flicker {
+  stroke: var(--route-flicker);
+  stroke-width: 3px;
+  stroke-opacity: 0.95;
+  stroke-dasharray: 10 6;
+}
+
+.ghost-map .route-whisper {
+  stroke: var(--route-whisper);
+  stroke-width: 2px;
+  stroke-opacity: 0.9;
+  stroke-dasharray: 2 6;
+}
+
+.ghost-map .route-stop {
+  fill: var(--bg);
+  fill-opacity: 1;
+  stroke-width: 2px;
+}
+
+.ghost-map .route-stop-solid { stroke: var(--route-solid); }
+.ghost-map .route-stop-flicker { stroke: var(--route-flicker); }
+.ghost-map .route-stop-whisper { stroke: var(--route-whisper); }
+
+.ghost-map .route-tooltip {
+  background: var(--surface);
+  color: var(--text);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+
+.ghost-map .route-tooltip::before {
+  display: none;
+}
+
 .border { border-width: var(--hairline); }
 .border-t { border-top-width: var(--hairline); }
 .border-r { border-right-width: var(--hairline); }

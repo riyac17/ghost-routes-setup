@@ -3,6 +3,8 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import { useTheme } from 'next-themes'
+import { RouteLayer } from '@/components/route-layer'
+import type { GhostRoute } from '@/lib/routes'
 
 const BENGALURU_CENTER: [number, number] = [12.9716, 77.5946]
 
@@ -16,7 +18,7 @@ const TILE_URLS = {
 const ATTRIBUTION =
   '&copy; OpenStreetMap contributors &copy; Esri, HERE, Garmin, USGS'
 
-export default function GhostMap() {
+export default function GhostMap({ routes }: { routes: GhostRoute[] }) {
   const { resolvedTheme } = useTheme()
   const tileTheme = resolvedTheme === 'light' ? 'light' : 'dark'
 
@@ -34,6 +36,7 @@ export default function GhostMap() {
         attribution={ATTRIBUTION}
         maxZoom={16}
       />
+      <RouteLayer routes={routes} />
     </MapContainer>
   )
 }
