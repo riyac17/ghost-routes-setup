@@ -4,7 +4,7 @@ import { ThemeToggle } from '@/components/theme-toggle'
 export default function Page() {
   return (
     <main className="relative h-dvh w-full overflow-hidden bg-bg text-text">
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <MapLoader />
       </div>
 
@@ -14,7 +14,7 @@ export default function Page() {
         </h1>
       </header>
 
-      <div className="absolute right-4 top-4 z-[1000] md:right-6 md:top-6">
+      <div className="fixed right-4 top-4 z-[1000] md:right-6 md:top-6">
         <ThemeToggle />
       </div>
     </main>

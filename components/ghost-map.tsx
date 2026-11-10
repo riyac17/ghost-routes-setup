@@ -6,12 +6,15 @@ import { useTheme } from 'next-themes'
 
 const BENGALURU_CENTER: [number, number] = [12.9716, 77.5946]
 
+// CARTO basemaps now return an "API KEY REQUIRED" placeholder tile, so we use
+// Esri's keyless Canvas basemaps, which also ship matching dark and light styles.
 const TILE_URLS = {
-  dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  dark: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  light: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
 } as const
 
-const ATTRIBUTION = '&copy; OpenStreetMap contributors &copy; CARTO'
+const ATTRIBUTION =
+  '&copy; OpenStreetMap contributors &copy; Esri, HERE, Garmin, USGS'
 
 export default function GhostMap() {
   const { resolvedTheme } = useTheme()
@@ -28,8 +31,7 @@ export default function GhostMap() {
         key={tileTheme}
         url={TILE_URLS[tileTheme]}
         attribution={ATTRIBUTION}
-        subdomains="abcd"
-        maxZoom={20}
+        maxZoom={16}
       />
     </MapContainer>
   )
