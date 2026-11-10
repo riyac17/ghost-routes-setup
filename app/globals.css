@@ -1,0 +1,128 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme (default) */
+:root {
+  color-scheme: light;
+
+  --bg: #f4f3ee;
+  --surface: #ffffff;
+  --card-bg: #faf9f5;
+  --line: #d9d6cc;
+  --text: #14181d;
+  --text-muted: #5b6672;
+
+  --route-solid: #0f9d75;
+  --route-flicker: #b7791f;
+  --route-whisper: #8a94a0;
+
+  --hairline: 0.5px;
+
+  /* shadcn token mapping */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--card-bg);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: var(--text);
+  --primary-foreground: var(--bg);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--card-bg);
+  --accent-foreground: var(--text);
+  --destructive: #c2410c;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--route-solid);
+  --radius: 0.375rem;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --bg: #0b0f14;
+  --surface: #10161d;
+  --card-bg: #131a22;
+  --line: #2a3440;
+  --text: #e8e6df;
+  --text-muted: #8b98a6;
+
+  --route-solid: #7cf0c8;
+  --route-flicker: #e8c06a;
+  --route-whisper: #5a6978;
+
+  --destructive: #f07c5a;
+}
+
+@theme inline {
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-muted-text: var(--text-muted);
+
+  --color-route-solid: var(--route-solid);
+  --color-route-flicker: var(--route-flicker);
+  --color-route-whisper: var(--route-whisper);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground font-sans;
+    height: 100%;
+  }
+}
+
+/* Flat style (unlayered so it wins over utilities): hairline borders, no shadows */
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+.border { border-width: var(--hairline); }
+.border-t { border-top-width: var(--hairline); }
+.border-r { border-right-width: var(--hairline); }
+.border-b { border-bottom-width: var(--hairline); }
+.border-l { border-left-width: var(--hairline); }
+.border-x { border-inline-width: var(--hairline); }
+.border-y { border-block-width: var(--hairline); }
