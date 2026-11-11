@@ -8,6 +8,6 @@ const GhostMap = dynamic(() => import('@/components/ghost-map'), {
   loading: () => <div className="size-full bg-bg" aria-hidden="true" />,
 })
 
-export function MapLoader({ routes }: { routes: GhostRoute[] }) {
-  return <GhostMap routes={routes} />
+export function MapLoader({ routes, signedIn }: { routes: GhostRoute[]; signedIn: boolean }) {
+  return <GhostMap routes={routes} signedIn={signedIn} />
 }

@@ -145,6 +145,13 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   cursor: pointer;
+  /* Tier changes remount the path, so the fade is an entrance animation. */
+  animation: route-line-fade 600ms ease-out;
+}
+
+@keyframes route-line-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .ghost-map .route-solid {
@@ -203,6 +210,35 @@
 }
 
 .ghost-map .route-stop { cursor: pointer; }
+
+/* Stop halos: two concentric rings in the solid route colour that pulse
+   outward slowly. Radius is set per stop in the layer component. */
+.ghost-map .route-ripple {
+  stroke: none;
+  fill: var(--route-solid);
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: route-ripple-pulse 5s ease-out infinite;
+}
+
+.ghost-map .route-ripple-inner { fill-opacity: 0.35; }
+
+.ghost-map .route-ripple-outer {
+  fill-opacity: 0.15;
+  animation-delay: 1.25s;
+}
+
+@keyframes route-ripple-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  70% { opacity: 0.25; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ghost-map .route-ripple,
+  .ghost-map .route-line { animation: none; }
+}
 
 .ghost-map .stop-popup .leaflet-popup-content-wrapper {
   background: var(--surface);

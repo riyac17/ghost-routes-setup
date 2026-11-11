@@ -2,6 +2,14 @@
   {
     "id": "route-majestic-indiranagar",
     "name": "Majestic – Indiranagar 100 ft Road",
+    "vehicleType": "bus",
+    "fareMin": 15,
+    "fareMax": 25,
+    "fareReports": 41,
+    "startLandmark": "Kempegowda Bus Station",
+    "endLandmark": "near Sony World Signal",
+    "firstVehicleHour": 6,
+    "lastVehicleHour": 22,
     "geometry": {
       "type": "LineString",
       "coordinates": [
@@ -82,6 +90,14 @@
   {
     "id": "route-marathahalli-whitefield",
     "name": "Marathahalli – Whitefield",
+    "vehicleType": "minibus",
+    "fareMin": 12,
+    "fareMax": 22,
+    "fareReports": 28,
+    "startLandmark": "Marathahalli Bridge",
+    "endLandmark": "near ITPL Main Gate",
+    "firstVehicleHour": 6,
+    "lastVehicleHour": 23,
     "geometry": {
       "type": "LineString",
       "coordinates": [
@@ -153,6 +169,14 @@
   {
     "id": "route-jayanagar-btm",
     "name": "Jayanagar 4th Block – BTM Layout",
+    "vehicleType": "auto",
+    "fareMin": 20,
+    "fareMax": 35,
+    "fareReports": 19,
+    "startLandmark": "Jayanagar 4th Block",
+    "endLandmark": "near Silk Board Junction",
+    "firstVehicleHour": 6,
+    "lastVehicleHour": 22,
     "geometry": {
       "type": "LineString",
       "coordinates": [
@@ -222,6 +246,14 @@
   {
     "id": "route-hebbal-shivajinagar",
     "name": "Hebbal – Shivajinagar",
+    "vehicleType": "jeep",
+    "fareMin": 25,
+    "fareMax": 40,
+    "fareReports": 8,
+    "startLandmark": "Hebbal Flyover",
+    "endLandmark": "near Commercial Street",
+    "firstVehicleHour": 7,
+    "lastVehicleHour": 21,
     "geometry": {
       "type": "LineString",
       "coordinates": [
@@ -289,6 +321,14 @@
   {
     "id": "route-banashankari-majestic",
     "name": "Banashankari – Majestic",
+    "vehicleType": "bus",
+    "fareMin": 15,
+    "fareMax": 25,
+    "fareReports": 22,
+    "startLandmark": "Banashankari TTMC",
+    "endLandmark": "near KSR City Railway Station",
+    "firstVehicleHour": 6,
+    "lastVehicleHour": 21,
     "geometry": {
       "type": "LineString",
       "coordinates": [
