@@ -6,11 +6,52 @@ import { latLngBounds, type Map as LeafletMap } from 'leaflet'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/navigation'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import { AlertSheet } from '@/components/alert-sheet'
 import { BookingSheet } from '@/components/booking-sheet'
+import { PickupLayer } from '@/components/pickup-layer'
+import { ReviewSheet } from '@/components/review-sheet'
 import { RouteLayer } from '@/components/route-layer'
 import { RouteSheet } from '@/components/route-sheet'
+import { SafetySheet } from '@/components/safety-sheet'
 import { SearchBar, type SearchResult } from '@/components/search-bar'
+import { Tour } from '@/components/tour'
 import { applyRouteReport, type GhostRoute, type RouteReportKind, type RouteReportResult, type VehicleFilter } from '@/lib/routes'
+import {
+  addSpotReview,
+  getSpotReviews,
+  groupSpots,
+  markReviewedToday,
+  reviewedSpotsToday,
+  streetTarget,
+  type ReviewDraft,
+  type ReviewTarget,
+  type SpotReview,
+} from '@/lib/reviews'
+import {
+  addAlert,
+  alertReportedToday,
+  getAlerts,
+  markAlertReported,
+  reportedAlertKeysToday,
+  summarizeAlerts,
+  type AlertDraft,
+  type AlertKind,
+  type RouteAlert,
+  type RouteAlertSummary,
+} from '@/lib/alerts'
+import {
+  addSafetyNote,
+  EMPTY_SAFETY_SUMMARY,
+  getSafetyNotes,
+  markNotedToday,
+  notedTargetsToday,
+  notedToday,
+  routeSafetyTarget,
+  safetySummaryFor,
+  type SafetyDraft,
+  type SafetyNote,
+  type SafetyTarget,
+} from '@/lib/safety'
 
 const BENGALURU_CENTER: [number, number] = [12.9716, 77.5946]
 const FIT_PADDING: [number, number] = [40, 40]
@@ -93,6 +134,87 @@ function MapClickClose({ onClose }: { onClose: () => void }) {
   return null
 }
 
+// A long press (or right click) anywhere on the map starts a pickup review for
+// that street spot. The point is snapped to a ~50 m grid before it is stored.
+function MapLongPress({ onSpot }: { onSpot: (lat: number, lon: number) => void }) {
+  const map = useMap()
+
+  useEffect(() => {
+    const container = map.getContainer()
+    let timer: ReturnType<typeof setTimeout> | null = null
+    let origin: { x: number; y: number } | null = null
+    let suppressUntil = 0
+
+    const cancel = () => {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+      origin = null
+    }
+
+    const open = (clientX: number, clientY: number) => {
+      const rect = container.getBoundingClientRect()
+      const point = map.containerPointToLatLng([clientX - rect.left, clientY - rect.top])
+      // A long press also fires contextmenu on touch; ignore that echo.
+      suppressUntil = Date.now() + 900
+      onSpot(point.lat, point.lng)
+    }
+
+    // Markers, lines and popups keep their own click behaviour.
+    const isMapSurface = (target: EventTarget | null) =>
+      !(target as Element | null)?.closest?.(
+        '.leaflet-interactive, .leaflet-popup, .leaflet-control, .leaflet-tooltip',
+      )
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return
+      if (!isMapSurface(event.target)) return
+
+      cancel()
+      origin = { x: event.clientX, y: event.clientY }
+      const start = origin
+
+      timer = setTimeout(() => {
+        timer = null
+        if (!origin) return
+        open(start.x, start.y)
+      }, 550)
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!origin) return
+      if (Math.hypot(event.clientX - origin.x, event.clientY - origin.y) > 8) cancel()
+    }
+
+    const onContextMenu = (event: MouseEvent) => {
+      event.preventDefault()
+      if (Date.now() < suppressUntil) return
+      if (!isMapSurface(event.target)) return
+      open(event.clientX, event.clientY)
+    }
+
+    container.addEventListener('pointerdown', onPointerDown)
+    container.addEventListener('pointermove', onPointerMove)
+    container.addEventListener('pointerup', cancel)
+    container.addEventListener('pointercancel', cancel)
+    container.addEventListener('pointerleave', cancel)
+    container.addEventListener('contextmenu', onContextMenu)
+
+    return () => {
+      cancel()
+      container.removeEventListener('pointerdown', onPointerDown)
+      container.removeEventListener('pointermove', onPointerMove)
+      container.removeEventListener('pointerup', cancel)
+      container.removeEventListener('pointercancel', cancel)
+      container.removeEventListener('pointerleave', cancel)
+      container.removeEventListener('contextmenu', onContextMenu)
+    }
+  }, [map, onSpot])
+
+  return null
+}
+
 export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; signedIn: boolean }) {
   const { resolvedTheme } = useTheme()
   const router = useRouter()
@@ -102,8 +224,54 @@ export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; s
   const [vehicleFilter, setVehicleFilter] = useState<VehicleFilter>('all')
   // Local copy of the data so community reports update the map without a reload.
   const [routeData, setRouteData] = useState<GhostRoute[]>(routes)
+  // Pickup-ease reviews are anonymous and device-local: no ids are stored.
+  const [reviews, setReviews] = useState<SpotReview[]>(() => getSpotReviews())
+  const [reviewedSpotIds, setReviewedSpotIds] = useState<string[]>(() => reviewedSpotsToday())
+  const [pickupEaseOn, setPickupEaseOn] = useState(false)
+  const [reviewTarget, setReviewTarget] = useState<ReviewTarget | null>(null)
+  // Safety notes are tags only, anonymous, and device-local.
+  const [safetyNotes, setSafetyNotes] = useState<SafetyNote[]>(() => getSafetyNotes())
+  const [notedSafetyIds, setNotedSafetyIds] = useState<string[]>(() => notedTargetsToday())
+  const [safetyTarget, setSafetyTarget] = useState<SafetyTarget | null>(null)
+  // Disruption reports expire after 24 hours and carry no user id.
+  const [alerts, setAlerts] = useState<RouteAlert[]>(() => getAlerts())
+  const [reportedAlertKeys, setReportedAlertKeys] = useState<string[]>(() =>
+    reportedAlertKeysToday(),
+  )
+  const [alertRouteId, setAlertRouteId] = useState<string | null>(null)
+  const pickupSpots = useMemo(() => groupSpots(reviews), [reviews])
+  const alertSummaries = useMemo(() => summarizeAlerts(alerts), [alerts])
   const tileTheme = resolvedTheme === 'light' ? 'light' : 'dark'
   const selectedRoute = routeData.find((route) => route.id === selectedRouteId) ?? null
+  const selectedSafety = useMemo(
+    () =>
+      selectedRoute
+        ? safetySummaryFor(safetyNotes, routeSafetyTarget(selectedRoute).targetId)
+        : EMPTY_SAFETY_SUMMARY,
+    [safetyNotes, selectedRoute],
+  )
+
+  // Routes with active alerts, newest report first, for the Alerts list.
+  const alertRoutes = useMemo(
+    () =>
+      routeData
+        .map((route) => ({ route, summary: alertSummaries.get(route.id) }))
+        .filter(
+          (entry): entry is { route: GhostRoute; summary: RouteAlertSummary } =>
+            Boolean(entry.summary),
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.summary.newest?.createdAt ?? 0).getTime() -
+            new Date(a.summary.newest?.createdAt ?? 0).getTime(),
+        ),
+    [routeData, alertSummaries],
+  )
+
+  const alertedRouteIds = alertRoutes
+    .filter((entry) => entry.summary.banner)
+    .map((entry) => entry.route.id)
+  const alertRoute = routeData.find((route) => route.id === alertRouteId) ?? null
 
   const visibleRoutes = useMemo(
     () =>
@@ -204,6 +372,99 @@ export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; s
     [routeData],
   )
 
+  const handleRateSpot = useCallback((target: ReviewTarget) => {
+    setSelectedRouteId(null)
+    setBookingRouteId(null)
+    setReviewTarget(target)
+  }, [])
+
+  const handleStreetLongPress = useCallback(
+    (lat: number, lon: number) => handleRateSpot(streetTarget(lat, lon)),
+    [handleRateSpot],
+  )
+
+  const handleSubmitReview = useCallback(
+    async (draft: ReviewDraft) => {
+      if (!reviewTarget) return
+
+      const review = await addSpotReview(reviewTarget, draft)
+      markReviewedToday(reviewTarget.spotId)
+      setReviews((prev) => [...prev, review])
+      setReviewedSpotIds(reviewedSpotsToday())
+    },
+    [reviewTarget],
+  )
+
+  const handleAddSafetyNote = useCallback((target: SafetyTarget) => {
+    setReviewTarget(null)
+    setBookingRouteId(null)
+    setSafetyTarget(target)
+  }, [])
+
+  const handleSubmitSafetyNote = useCallback(
+    async (draft: SafetyDraft) => {
+      if (!safetyTarget) return
+      // The day limit lives in storage too, so a double tap cannot add twice.
+      if (notedToday(safetyTarget.targetId)) return
+
+      const note = await addSafetyNote(safetyTarget, draft)
+      markNotedToday(safetyTarget.targetId)
+      setSafetyNotes((prev) => [...prev, note])
+      setNotedSafetyIds(notedTargetsToday())
+    },
+    [safetyTarget],
+  )
+
+  const handleSelectAlertRoute = useCallback(
+    (routeId: string) => {
+      const route = routeData.find((entry) => entry.id === routeId)
+      if (!route) return
+
+      setSelectedRouteId(routeId)
+      if (!map) return
+
+      const bounds = routeBounds(route)
+      if (bounds.isValid()) map.flyToBounds(bounds, { padding: FIT_PADDING, duration: 0.6 })
+    },
+    [map, routeData],
+  )
+
+  // Only one bottom sheet at a time.
+  const handleReportProblem = useCallback(() => {
+    if (!selectedRoute) return
+
+    setReviewTarget(null)
+    setSafetyTarget(null)
+    setBookingRouteId(null)
+    setAlertRouteId(selectedRoute.id)
+  }, [selectedRoute])
+
+  const handleSubmitAlert = useCallback(
+    async (draft: AlertDraft) => {
+      if (!alertRoute) return
+
+      const routeId = alertRoute.id
+      // One report of each type per route per day. Claim the day slot before
+      // writing, so a double tap or retried click cannot add two reports.
+      if (alertReportedToday(routeId, draft.kind)) return
+      markAlertReported(routeId, draft.kind)
+
+      try {
+        const alert = await addAlert(routeId, draft)
+        setAlerts((prev) => [...prev, alert])
+      } finally {
+        setReportedAlertKeys(reportedAlertKeysToday())
+      }
+    },
+    [alertRoute],
+  )
+
+  const alertReportedKinds = alertRoute
+    ? (reportedAlertKeys
+        .filter((key) => key.startsWith(`${alertRoute.id}:`))
+        .map((key) => key.slice(alertRoute.id.length + 1)) as AlertKind[])
+    : []
+
   return (
     <div className="relative size-full">
       <MapContainer
@@ -226,7 +487,22 @@ export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; s
           routes={visibleRoutes}
           selectedRouteId={selectedRouteId}
           onSelectRoute={setSelectedRouteId}
+          reviews={reviews}
+          onRateSpot={handleRateSpot}
+          reviewedSpotIds={reviewedSpotIds}
+          safetyNotes={safetyNotes}
+          onAddSafetyNote={handleAddSafetyNote}
+          notedSafetyIds={notedSafetyIds}
+          alertedRouteIds={alertedRouteIds}
         />
+        {pickupEaseOn ? (
+          <PickupLayer
+            spots={pickupSpots}
+            onRateSpot={handleRateSpot}
+            reviewedSpotIds={reviewedSpotIds}
+          />
+        ) : null}
+        <MapLongPress onSpot={handleStreetLongPress} />
         <MapClickClose onClose={closeSheet} />
       </MapContainer>
 
@@ -234,6 +510,10 @@ export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; s
         routes={visibleRoutes}
         vehicleFilter={vehicleFilter}
         onVehicleFilterChange={setVehicleFilter}
+        pickupEase={pickupEaseOn}
+        onPickupEaseChange={setPickupEaseOn}
+        alertRoutes={alertRoutes}
+        onSelectAlertRoute={handleSelectAlertRoute}
         onSelect={handleSearchSelect}
       />
 
@@ -247,10 +527,45 @@ export default function GhostMap({ routes, signedIn }: { routes: GhostRoute[]; s
           onClose={closeSheet}
           onReport={handleReport}
           onRequestSeat={handleRequestSeat}
+          safety={selectedSafety}
+          safetyNotedToday={notedSafetyIds.includes(routeSafetyTarget(selectedRoute).targetId)}
+          onAddSafetyNote={() => handleAddSafetyNote(routeSafetyTarget(selectedRoute))}
+          alerts={alertSummaries.get(selectedRoute.id) ?? null}
+          onReportProblem={handleReportProblem}
         />
       )}
 
       {bookingRoute && <BookingSheet route={bookingRoute} onClose={() => setBookingRouteId(null)} />}
+
+      {reviewTarget ? (
+        <ReviewSheet
+          target={reviewTarget}
+          alreadyReviewed={reviewedSpotIds.includes(reviewTarget.spotId)}
+          onClose={() => setReviewTarget(null)}
+          onSubmit={handleSubmitReview}
+        />
+      ) : null}
+
+      {safetyTarget ? (
+        <SafetySheet
+          target={safetyTarget}
+          alreadyNoted={notedSafetyIds.includes(safetyTarget.targetId)}
+          onClose={() => setSafetyTarget(null)}
+          onSubmit={handleSubmitSafetyNote}
+        />
+      ) : null}
+
+      {alertRoute ? (
+        <AlertSheet
+          route={alertRoute}
+          reportedKinds={alertReportedKinds}
+          onClose={() => setAlertRouteId(null)}
+          onSubmit={handleSubmitAlert}
+        />
+      ) : null}
+
+      {/* First-visit walkthrough; replayed from the account area. */}
+      <Tour />
     </div>
   )
 }

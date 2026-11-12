@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Armchair, Check, Share2, X } from 'lucide-react'
+import { SafetySection } from '@/components/safety-notes'
 import { VehicleIcon } from '@/components/vehicle-icon'
+import { ALERT_LABELS, relativeTime, reportCountLabel, type RouteAlertSummary } from '@/lib/alerts'
+import type { SafetySummary } from '@/lib/safety'
 import {
   VEHICLE_LABELS,
   type GhostRoute,
@@ -124,11 +127,21 @@ export function RouteSheet({
   onClose,
   onReport,
   onRequestSeat,
+  safety,
+  safetyNotedToday,
+  onAddSafetyNote,
+  alerts,
+  onReportProblem,
 }: {
   route: GhostRoute
   onClose: () => void
   onReport: (routeId: string, kind: RouteReportKind) => Promise<RouteReportResult | null>
   onRequestSeat: () => void
+  safety: SafetySummary
+  safetyNotedToday: boolean
+  onAddSafetyNote: () => void
+  alerts: RouteAlertSummary | null
+  onReportProblem: () => void
 }) {
   const filled = Math.round(route.confidence * SEGMENTS)
   const label = route.confidence > 0.9 ? 'solid' : 'materializing'
@@ -199,6 +212,23 @@ export function RouteSheet({
       data-route-sheet
       className="absolute inset-x-0 bottom-0 z-[1000] rounded-t-lg border border-line bg-surface md:inset-y-0 md:left-0 md:right-auto md:w-[360px] md:rounded-none md:border-r"
     >
+      {/* Sits above the scrolling body so the warning stays put. */}
+      {alerts && alerts.banner && alerts.newest ? (
+        <div className="flex items-start gap-2 border-b border-line bg-route-flicker/10 px-5 py-2 md:px-6">
+          <span
+            aria-hidden="true"
+            className="mt-1.5 size-1.5 shrink-0 rounded-full bg-route-flicker"
+          />
+          <p className="font-sans text-xs leading-snug text-text">
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-route-flicker">
+              Reported:
+            </span>{' '}
+            {ALERT_LABELS[alerts.newest.kind]} · {reportCountLabel(alerts.count)} ·{' '}
+            {relativeTime(alerts.newest.createdAt)}
+          </p>
+        </div>
+      ) : null}
+
       <div className="flex max-h-[75vh] flex-col gap-4 overflow-y-auto p-5 pb-6 md:h-full md:max-h-none md:p-6">
         <div className="flex items-start justify-between gap-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-text">
@@ -297,6 +327,13 @@ export function RouteSheet({
           </div>
         </div>
 
+        <SafetySection
+          summary={safety}
+          notedToday={safetyNotedToday}
+          onAddNote={onAddSafetyNote}
+          className="border-t border-line pt-4"
+        />
+
         <button
           type="button"
           onClick={onRequestSeat}
@@ -329,6 +366,13 @@ export function RouteSheet({
               Not running
             </button>
           </div>
+          <button
+            type="button"
+            onClick={onReportProblem}
+            className="inline-flex h-9 w-full items-center justify-center rounded-full border border-line bg-surface px-3 font-sans text-sm text-muted-text transition-colors hover:bg-card hover:text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-route-solid"
+          >
+            Report a problem
+          </button>
           <p aria-live="polite" className="font-sans text-[11px] text-muted-text">
             {reported ? 'Reported today' : 'Anonymous. Nothing is tied to you.'}
           </p>
